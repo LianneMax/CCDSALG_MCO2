@@ -1,0 +1,26 @@
+Project #2 - Hash Table (Application of Hashing Functions and Collision Resolution Techniques)
+
+Project Description:
+- The program should store MANY strings as key values into a hash table data structure.
+- The strings in the project will ONLY CONTAIN lowercase and uppercase letters.
+- The strings should be CASE-SENSTIve.
+- There are no digits, symbols, nor white spaces.
+- The MAXIMUM STRING LENGTH is 15 characters (excluding the null byte).
+- The strings doesn't need to be actual words (it can be aaa).
+
+IMPORTANT THINGS TO DISCUSS WITH THE GROUP:
+1. What hashing function will be used?
+    - It's not limited to a simple modulus k % m
+    - The objective is to find a hashing function with the smallest number of collisions.
+2. What collision technique will you use?
+
+
+TASK #1 (HASH TABLE: DATA STRUCTURE):
+- The HASH TABLE is used to store the key valuse (string).
+
+1. Implement the hash table as a 1D array of strings
+    - The hash table size CAN BE LESS than the array size. BUT NOT MORE.
+    - MAKE SURE THAT THE HASH TABLE CAN STORE A MAXIMUM OF n = 2^14 = 16384 strings
+    - The HASH TABLE SIZE should be set such that it is equal to the first prime number above 1.1 * n
+        EXAMPLE:
+        1.
