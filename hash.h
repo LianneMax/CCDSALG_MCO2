@@ -5,13 +5,13 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define MAX_TABLE_SIZE 18031 // Adjust based on the example's prime number logic
+#define MAX_TABLE_SIZE 18031 // Adjust based on the prime number logic
 #define MAX_STRING_LENGTH 15
 
 // Function Prototypes
-unsigned int hashFunction(const char *key);
-unsigned int collisionResolution(unsigned int index, unsigned int attempt);
-int search(const char *key, char *table[], unsigned int size);
-void insert(const char *key, char *table[], unsigned int size);
+int hashFunction(const char *key);
+int collisionResolution(int index, int attempt);
+int search(const char *key, char *table[], int size);
+void insert(const char *key, char *table[], int size);
 
 #endif // HASH_H

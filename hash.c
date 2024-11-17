@@ -1,25 +1,31 @@
 #include "hash.h"
 
 // Hash function (example using a simple polynomial rolling hash)
-unsigned int hashFunction(const char *key) {
-    unsigned int hash = 0, p = 31, m = MAX_TABLE_SIZE;
-    int i;
-
+int hashFunction(const char *key) {
+    int hash = 0, p = 31, m = MAX_TABLE_SIZE;
+    int i; // Declare i outside the for loop
     for (i = 0; key[i] != '\0'; i++) {
         hash = (hash * p + key[i]) % m;
+        if (hash < 0) { 
+            hash += m; // Ensure non-negative index
+        }
     }
     return hash;
 }
 
 // Linear probing as a collision resolution technique
-unsigned int collisionResolution(unsigned int index, unsigned int attempt) {
-    return (index + attempt) % MAX_TABLE_SIZE;
+int collisionResolution(int index, int attempt) {
+    int newIndex = (index + attempt) % MAX_TABLE_SIZE;
+    if (newIndex < 0) {
+        newIndex += MAX_TABLE_SIZE; // Ensure non-negative index
+    }
+    return newIndex;
 }
 
 // Search function
-int search(const char *key, char *table[], unsigned int size) {
-    unsigned int index = hashFunction(key);
-    unsigned int attempt = 0;
+int search(const char *key, char *table[], int size) {
+    int index = hashFunction(key);
+    int attempt = 0;
     while (table[index] != NULL) {
         if (strcmp(table[index], key) == 0) {
             return index;
@@ -31,9 +37,9 @@ int search(const char *key, char *table[], unsigned int size) {
 }
 
 // Insert function
-void insert(const char *key, char *table[], unsigned int size) {
-    unsigned int index = hashFunction(key);
-    unsigned int attempt = 0;
+void insert(const char *key, char *table[], int size) {
+    int index = hashFunction(key);
+    int attempt = 0;
     while (table[index] != NULL) {
         if (strcmp(table[index], key) == 0) {
             return; // Duplicate, do not insert
