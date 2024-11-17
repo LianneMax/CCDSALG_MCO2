@@ -24,16 +24,27 @@ int main() {
     int stored = 0, inHomeAddress = 0, collisions = 0, comparisons = 0;
 
     while (fscanf(inputFile, "%s", key) == 1) {
-        int index = hashFunction(key);
+        int homeIndex = hashFunction(key);
         int searchResult = search(key, hashTable, MAX_TABLE_SIZE);
 
-        if (searchResult == -1) {
-            insert(key, hashTable, MAX_TABLE_SIZE);
+        if (searchResult == -1) {  // Key not found
+            int finalIndex = homeIndex; // Store initial home address
+            int attempt = 0;
+
+            while (hashTable[finalIndex] != NULL) {  // Collision resolution
+                attempt++;
+                comparisons++;  // Count string comparisons during insert
+                finalIndex = collisionResolution(homeIndex, attempt);
+            }
+
+            hashTable[finalIndex] = strdup(key);
             stored++;
-            if (hashFunction(key) == index) {
-                inHomeAddress++;
+            comparisons++;  // Add comparison for successful placement
+
+            if (finalIndex == homeIndex) {
+                inHomeAddress++;  // Count strings in their home address
             } else {
-                collisions++;
+                collisions++;  // Count collisions
             }
         }
     }
@@ -49,19 +60,23 @@ int main() {
         return EXIT_FAILURE;
     }
 
+    // Write summary to the output file
     fprintf(outputFile, "%d\n%d\n%d\n%d\n%.6f\n", n, stored, inHomeAddress, collisions, (float)comparisons / stored);
 
+    // Write detailed hash table content
     int i;
     for (i = 0; i < MAX_TABLE_SIZE; i++) {
         if (hashTable[i]) {
-            fprintf(outputFile, "%d %s %d %s %d\n", i, hashTable[i], hashFunction(hashTable[i]),
-                    hashFunction(hashTable[i]) == i ? "YES" : "NO", 1);
+            int homeIndex = hashFunction(hashTable[i]);
+            fprintf(outputFile, "%d %s %d %s %d\n", i, hashTable[i], homeIndex,
+                    homeIndex == i ? "YES" : "NO", 1 + (i != homeIndex));  // Comparisons depend on collision
         } else {
             fprintf(outputFile, "%d --- --- --- ---\n", i);
         }
     }
     fclose(outputFile);
 
+    // Clean up memory
     for (i = 0; i < MAX_TABLE_SIZE; i++) {
         free(hashTable[i]);
     }
