@@ -46,6 +46,10 @@ void insert(const char *key, char *table[], int size) {
         }
         attempt++;
         index = collisionResolution(index, attempt);
+        if (attempt >= size) {
+            fprintf(stderr, "Hash table is full!\n");
+            return; // Table is full
+        }
     }
     table[index] = strdup(key); // Store a copy of the key
 }
