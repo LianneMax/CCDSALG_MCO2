@@ -2,16 +2,20 @@
 #define HASH_H
 
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 
-#define MAX_TABLE_SIZE 18031 // Adjust based on the prime number logic
+// Define maximum string length and hash table size
 #define MAX_STRING_LENGTH 15
+#define HASH_TABLE_SIZE 18031 // First prime number above 1.1 * 16384
 
-// Function Prototypes
-int hashFunction(const char *key);
-int collisionResolution(int index, int attempt);
-int search(const char *key, char *table[], int size);
-void insert(const char *key, char *table[], int size);
+// Function prototypes
+unsigned int hash_function(const char *str, unsigned int table_size);
+unsigned int resolve_collision(unsigned int index, unsigned int i, unsigned int table_size);
+int insert(char *table[], unsigned int table_size, const char *str, unsigned int *collisions);
+int search(char *table[], unsigned int table_size, const char *str, unsigned int *comparisons);
+void free_table(char *table[], unsigned int table_size);
 
-#endif // HASH_H
+#endif
+
+

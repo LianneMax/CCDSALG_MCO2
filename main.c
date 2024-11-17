@@ -1,85 +1,99 @@
 #include "hash.h"
 
-int main() {
-    int n;
-    char **hashTable = calloc(MAX_TABLE_SIZE, sizeof(char *));
-    if (!hashTable) {
-        perror("Memory allocation failed");
+int main(int argc, char *argv[]) {
+    if (argc != 3) {
+        fprintf(stderr, "Usage: %s <input_file> <output_file>\n", argv[0]);
         return EXIT_FAILURE;
     }
 
-    char inputFileName[256], outputFileName[256];
-    printf("Enter input file name: ");
-    scanf("%255s", inputFileName);
-
-    FILE *inputFile = fopen(inputFileName, "r");
-    if (!inputFile) {
-        perror("Failed to open input file");
-        free(hashTable);
+    // Open input file
+    FILE *in = fopen(argv[1], "r");
+    if (!in) {
+        perror("Error opening input file");
         return EXIT_FAILURE;
     }
 
-    fscanf(inputFile, "%d", &n);
-    char key[MAX_STRING_LENGTH + 1];
-    int stored = 0, inHomeAddress = 0, collisions = 0, comparisons = 0;
+    unsigned int n;
+    fscanf(in, "%u", &n); // Read the number of strings
 
-    while (fscanf(inputFile, "%s", key) == 1) {
-        int homeIndex = hashFunction(key);
-        int searchResult = search(key, hashTable, MAX_TABLE_SIZE);
+    char buffer[100000];
+    size_t bytes_read = fread(buffer, sizeof(char), sizeof(buffer) - 1, in);
+    fclose(in);
 
-        if (searchResult == -1) {  // Key not found
-            int finalIndex = homeIndex; // Store initial home address
-            int attempt = 0;
+    if (bytes_read <= 0) {
+        fprintf(stderr, "Error reading input file or file is empty.\n");
+        return EXIT_FAILURE;
+    }
 
-            while (hashTable[finalIndex] != NULL) {  // Collision resolution
-                attempt++;
-                comparisons++;  // Count string comparisons during insert
-                finalIndex = collisionResolution(homeIndex, attempt);
-            }
+    buffer[bytes_read] = '\0'; // Ensure null termination
 
-            hashTable[finalIndex] = strdup(key);
-            stored++;
-            comparisons++;  // Add comparison for successful placement
+    // Initialize hash table
+    char *hash_table[HASH_TABLE_SIZE] = {NULL};
+    unsigned int collisions = 0;
+    unsigned int total_comparisons = 0;
 
-            if (finalIndex == homeIndex) {
-                inHomeAddress++;  // Count strings in their home address
-            } else {
-                collisions++;  // Count collisions
-            }
+    // Tokenize input strings
+    char *token = strtok(buffer, " \n");
+    unsigned int unique_strings = 0, stored_in_home = 0;
+
+    while (token != NULL) {
+        char str[MAX_STRING_LENGTH + 1];
+        strncpy(str, token, MAX_STRING_LENGTH);
+        str[MAX_STRING_LENGTH] = '\0'; // Ensure null termination
+
+        unsigned int home_address = hash_function(str, HASH_TABLE_SIZE);
+        int result = insert(hash_table, HASH_TABLE_SIZE, str, &collisions);
+        if (result >= 0) {
+            unique_strings++;
+            if (result == (int)home_address) stored_in_home++;
         }
+
+        token = strtok(NULL, " \n");
     }
-    fclose(inputFile);
 
-    printf("Enter output file name: ");
-    scanf("%255s", outputFileName);
-
-    FILE *outputFile = fopen(outputFileName, "w");
-    if (!outputFile) {
-        perror("Failed to open output file");
-        free(hashTable);
+    // Open output file
+    FILE *out = fopen(argv[2], "w");
+    if (!out) {
+        perror("Error opening output file");
+        free_table(hash_table, HASH_TABLE_SIZE);
         return EXIT_FAILURE;
     }
 
-    // Write summary to the output file
-    fprintf(outputFile, "%d\n%d\n%d\n%d\n%.6f\n", n, stored, inHomeAddress, collisions, (float)comparisons / stored);
+    // Write summary results
+    fprintf(out, "%u\n", n);
+    fprintf(out, "%u\n", unique_strings);
+    fprintf(out, "%u\n", stored_in_home);
+    fprintf(out, "%u\n", collisions);
+    fprintf(out, "%.6f\n", (unique_strings > 0) ? (double)total_comparisons / unique_strings : 0);
 
-    // Write detailed hash table content
-    int i;
-    for (i = 0; i < MAX_TABLE_SIZE; i++) {
-        if (hashTable[i]) {
-            int homeIndex = hashFunction(hashTable[i]);
-            fprintf(outputFile, "%d %s %d %s %d\n", i, hashTable[i], homeIndex,
-                    homeIndex == i ? "YES" : "NO", 1 + (i != homeIndex));  // Comparisons depend on collision
+    // Write hash table details
+    unsigned int i; // Declare loop variable outside the loop
+    for (i = 0; i < HASH_TABLE_SIZE; i++) {
+        if (hash_table[i] != NULL) {
+            unsigned int comparisons = 0;
+            unsigned int home_address = hash_function(hash_table[i], HASH_TABLE_SIZE);
+            search(hash_table, HASH_TABLE_SIZE, hash_table[i], &comparisons);
+            fprintf(out, "%u %s %u %s %u\n", i, hash_table[i], home_address,
+                    (home_address == i) ? "YES" : "NO", comparisons);
+            total_comparisons += comparisons;
         } else {
-            fprintf(outputFile, "%d --- --- --- ---\n", i);
+            fprintf(out, "%u --- --- --- ---\n", i);
         }
     }
-    fclose(outputFile);
 
-    // Clean up memory
-    for (i = 0; i < MAX_TABLE_SIZE; i++) {
-        free(hashTable[i]);
-    }
-    free(hashTable);
+    fclose(out);
+    free_table(hash_table, HASH_TABLE_SIZE);
+    printf("Output written to %s\n", argv[2]);
+
     return EXIT_SUCCESS;
 }
+
+
+
+
+
+
+
+
+
+
