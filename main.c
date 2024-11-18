@@ -42,12 +42,14 @@ int main(int argc, char *argv[]) {
         strncpy(str, token, MAX_STRING_LENGTH);
         str[MAX_STRING_LENGTH] = '\0'; // Ensure null termination
 
-        printf("hash function ran for %d times\n", temp); // Debugging statement
+        //This should be invoked once per string
         int home_address = hash_function(str, HASH_TABLE_SIZE);
+        printf("The function hash_function ran for %d times\n", temp); //delete once the program is working
 
-        printf("insert function ran for %d times\n", temp); // Debugging statement
+        //This should be invoked once per string
         int result = insert(hash_table, HASH_TABLE_SIZE, str, &collisions, &stored_in_home);
-        printf("the value of collisions is %d\n", collisions); // Debugging statement
+        printf("The insert function ran for %d times\n", temp); //delete once the program is working
+        printf("the value of collisions is %d", collisions); // Debugging statement
 
         if (result >= 0) {
             unique_strings++;
@@ -59,6 +61,7 @@ int main(int argc, char *argv[]) {
             }
         }
 
+        printf("--------------------------------------\n\n\n");
         token = strtok(NULL, " \n");
         temp++; // Increment debug counter
     }
@@ -72,10 +75,10 @@ int main(int argc, char *argv[]) {
     }
 
     // Write summary results
-    fprintf(out, "%d\n", n);
-    fprintf(out, "%d\n", unique_strings);
-    fprintf(out, "%d\n", stored_in_home);
-    fprintf(out, "%d\n", collisions);
+    fprintf(out, "%d\n", n); //Line1
+    fprintf(out, "%d\n", unique_strings); //Line 2
+    fprintf(out, "%d\n", stored_in_home); //Line 3
+    fprintf(out, "%d\n", collisions); //Line 4
     fprintf(out, "%.6f\n", (unique_strings > 0) ? (double)total_comparisons / unique_strings : 0);
 
     // Write hash table details

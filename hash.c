@@ -20,22 +20,36 @@ int resolve_collision(int index, int i, int table_size) {
     return (index + i) % table_size; // Increment index by 1 (i) on each collision
 }
 
-// Insert function
-int insert(char *table[], int table_size, const char *str, int *collisions, int *stored_in_home) {
+// Handles collision resolution and finds the appropriate index for insertion
+int collision_resolution(char *table[], int table_size, const char *str, int *collisions) {
     int home_address = hash_function(str, table_size);
     int index = home_address;
     int i = 0;
 
     while (table[index] != NULL) {
         if (strcmp(table[index], str) == 0) {
-            return -1; // String already exists
+            // String already exists; no insertion
+            return -1;
         }
+        // Increment collisions for unique strings
         (*collisions)++;
         i++;
         index = resolve_collision(home_address, i, table_size);
     }
 
-    // Insert string into hash table
+    // Return the resolved index for insertion
+    return index;
+}
+
+int insert(char *table[], int table_size, const char *str, int *collisions, int *stored_in_home) {
+    // Call collision_resolution to handle probing and collision detection
+    int index = collision_resolution(table, table_size, str, collisions);
+    if (index == -1) {
+        printf("Duplicate detected for string: %s\n", str); // Debugging
+        return -1; // String already exists
+    }
+
+    // Insert the string into the hash table
     table[index] = strdup(str);
     if (!table[index]) {
         perror("Memory allocation failed");
@@ -43,12 +57,18 @@ int insert(char *table[], int table_size, const char *str, int *collisions, int 
     }
 
     // Check if stored at home address
+    int home_address = hash_function(str, table_size);
     if (index == home_address) {
         (*stored_in_home)++;
+        printf("String %s stored at home address %d\n", str, home_address); // Debugging
+    } else {
+        printf("String %s stored at index %d after resolving collision\n", str, index); // Debugging
     }
+    printf("------------------------------------------------\n"); //delete when the program works
 
     return index;
 }
+
 
 // Search function
 int search(char *table[], int table_size, const char *str, int *comparisons) {
