@@ -7,10 +7,10 @@ int hash_function(const char *str, int table_size) {
     int hash = 5381; // Start with a large prime number
     while (*str) {
         hash = ((hash << 5) + hash) + *str; // hash * 33 + current character
-        str++;
         if (hash < 0) {
             hash = -hash; // Ensure hash stays non-negative to avoid modulo issues
         }
+        str++;
     }
     return hash % table_size; // Fits within table size
 }
@@ -21,9 +21,9 @@ int resolve_collision(int index, int i, int table_size) {
 }
 
 // Insert function
-int insert(char *table[], int table_size, const char *str, int *collisions) {
-    int index = hash_function(str, table_size);
-    int original_index = index;
+int insert(char *table[], int table_size, const char *str, int *collisions, int *stored_in_home) {
+    int home_address = hash_function(str, table_size);
+    int index = home_address;
     int i = 0;
 
     while (table[index] != NULL) {
@@ -32,15 +32,21 @@ int insert(char *table[], int table_size, const char *str, int *collisions) {
         }
         (*collisions)++;
         i++;
-        index = resolve_collision(original_index, i, table_size);
-        if (index == original_index) {
-            return -1; // Table is full
-        }
+        index = resolve_collision(home_address, i, table_size);
     }
-    table[index] = strdup(str); // Store the string
-    if (table[index] == NULL) {
-        return -1; // Memory allocation failure
+
+    // Insert string into hash table
+    table[index] = strdup(str);
+    if (!table[index]) {
+        perror("Memory allocation failed");
+        exit(EXIT_FAILURE);
     }
+
+    // Check if stored at home address
+    if (index == home_address) {
+        (*stored_in_home)++;
+    }
+
     return index;
 }
 
@@ -57,9 +63,6 @@ int search(char *table[], int table_size, const char *str, int *comparisons) {
         }
         i++;
         index = resolve_collision(original_index, i, table_size);
-        if (index == original_index) {
-            break; // Full loop, string not found
-        }
     }
     return -1; // Not found
 }

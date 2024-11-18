@@ -31,24 +31,36 @@ int main(int argc, char *argv[]) {
     char *hash_table[HASH_TABLE_SIZE] = {NULL};
     int collisions = 0;
     int total_comparisons = 0;
+    int unique_strings = 0, stored_in_home = 0;
 
     // Tokenize input strings
     char *token = strtok(buffer, " \n");
-    int unique_strings = 0, stored_in_home = 0;
+    int temp = 1; // For debugging purposes
 
     while (token != NULL) {
         char str[MAX_STRING_LENGTH + 1];
         strncpy(str, token, MAX_STRING_LENGTH);
         str[MAX_STRING_LENGTH] = '\0'; // Ensure null termination
 
+        printf("hash function ran for %d times\n", temp); // Debugging statement
         int home_address = hash_function(str, HASH_TABLE_SIZE);
-        int result = insert(hash_table, HASH_TABLE_SIZE, str, &collisions);
+
+        printf("insert function ran for %d times\n", temp); // Debugging statement
+        int result = insert(hash_table, HASH_TABLE_SIZE, str, &collisions, &stored_in_home);
+        printf("the value of collisions is %d\n", collisions); // Debugging statement
+
         if (result >= 0) {
             unique_strings++;
-            if (result == home_address) stored_in_home++;
+            printf("\nunique strings is %d\n", unique_strings); // Debugging statement
+
+            if (result == home_address) {
+                stored_in_home++;
+                printf("stored in home is %d\n", stored_in_home); // Debugging statement
+            }
         }
 
         token = strtok(NULL, " \n");
+        temp++; // Increment debug counter
     }
 
     // Open output file

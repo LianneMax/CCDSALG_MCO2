@@ -12,7 +12,7 @@
 // Function prototypes
 int hash_function(const char *str, int table_size);
 int resolve_collision(int index, int i, int table_size);
-int insert(char *table[], int table_size, const char *str, int *collisions);
+int insert(char *table[], int table_size, const char *str, int *collisions, int *stored_in_home);
 int search(char *table[], int table_size, const char *str, int *comparisons);
 void free_table(char *table[], int table_size);
 
