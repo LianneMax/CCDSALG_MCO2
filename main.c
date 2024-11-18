@@ -1,17 +1,19 @@
 #include "hash.h"
 
-// Function to find the next prime number greater than or equal to `num`
+// Function to find the next prime number greater than `num`
 unsigned int next_prime(unsigned int num) {
+    if (num <= 2) return 2; // Special case for small numbers
+    num++; // Start searching from the next number
     unsigned int i; // Declare loop variable outside
     while (1) {
         int is_prime = 1;
-        for (i = 2; i * i <= num; i++) { // Use externally declared variable
+        for (i = 2; i * i <= num; i++) { // Check divisibility
             if (num % i == 0) {
                 is_prime = 0;
                 break;
             }
         }
-        if (is_prime) return num;
+        if (is_prime) return num; // Found the next prime
         num++;
     }
 }
@@ -38,6 +40,7 @@ int main(int argc, char *argv[]) {
 
     // Compute hash table size
     unsigned int table_size = next_prime((unsigned int)(1.1 * n));
+    printf("Computed hash table size: %u\n", table_size);
 
     char buffer[100000];
     size_t bytes_read = fread(buffer, sizeof(char), sizeof(buffer) - 1, input);
@@ -125,6 +128,8 @@ int main(int argc, char *argv[]) {
 
     return EXIT_SUCCESS;
 }
+
+
 
 
 
