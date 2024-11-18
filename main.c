@@ -31,40 +31,24 @@ int main(int argc, char *argv[]) {
     char *hash_table[HASH_TABLE_SIZE] = {NULL};
     int collisions = 0;
     int total_comparisons = 0;
-    int unique_strings = 0, stored_in_home = 0;
 
     // Tokenize input strings
     char *token = strtok(buffer, " \n");
-    int temp = 1; // For debugging purposes
+    int unique_strings = 0, stored_in_home = 0;
 
     while (token != NULL) {
         char str[MAX_STRING_LENGTH + 1];
         strncpy(str, token, MAX_STRING_LENGTH);
         str[MAX_STRING_LENGTH] = '\0'; // Ensure null termination
 
-        //This should be invoked once per string
         int home_address = hash_function(str, HASH_TABLE_SIZE);
-        printf("The function hash_function ran for %d times\n", temp); //delete once the program is working
-
-        //This should be invoked once per string
-        int result = insert(hash_table, HASH_TABLE_SIZE, str, &collisions, &stored_in_home);
-        printf("Collisions after inserting %s: %d\n", str, collisions); // delete once the program is working
-        printf("The insert function ran for %d times\n", temp); //delete once the program is working
-        printf("the value of collisions is %d\n", collisions); // Debugging statement
-
+        int result = insert(hash_table, HASH_TABLE_SIZE, str, &collisions);
         if (result >= 0) {
             unique_strings++;
-            printf("unique strings is %d\n", unique_strings); // Debugging statement
-
-            if (result == home_address) {
-                stored_in_home++;
-                printf("stored in home is %d\n", stored_in_home); // Debugging statement
-            }
+            if (result == home_address) stored_in_home++;
         }
 
-        printf("--------------------------------------\n\n\n");
         token = strtok(NULL, " \n");
-        temp++; // Increment debug counter
     }
 
     // Open output file
@@ -76,10 +60,10 @@ int main(int argc, char *argv[]) {
     }
 
     // Write summary results
-    fprintf(out, "%d\n", n); //Line1
-    fprintf(out, "%d\n", unique_strings); //Line 2
-    fprintf(out, "%d\n", stored_in_home); //Line 3
-    fprintf(out, "%d\n", collisions); //Line 4
+    fprintf(out, "%d\n", n);
+    fprintf(out, "%d\n", unique_strings);
+    fprintf(out, "%d\n", stored_in_home);
+    fprintf(out, "%d\n", collisions);
     fprintf(out, "%.6f\n", (unique_strings > 0) ? (double)total_comparisons / unique_strings : 0);
 
     // Write hash table details
