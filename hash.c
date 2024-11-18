@@ -29,12 +29,18 @@ int collision_resolution(char *table[], int table_size, const char *str, int *co
     while (table[index] != NULL) {
         if (strcmp(table[index], str) == 0) {
             // String already exists; no insertion
+            printf("Duplicate detected for string: %s at index %d\n", str, index); // Debugging
             return -1;
         }
-        // Increment collisions for unique strings
+
+        // Increment collisions for unique strings encountering an occupied slot
         (*collisions)++;
+        printf("Collision detected for string: %s at index %d\n", str, index); // Debugging
+        printf("The value of collision after detection is %n", collisions);
+
         i++;
         index = resolve_collision(home_address, i, table_size);
+        printf("Probing to index %d for string: %s\n", index, str); // Debugging
     }
 
     // Return the resolved index for insertion

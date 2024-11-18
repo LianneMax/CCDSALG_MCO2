@@ -48,12 +48,13 @@ int main(int argc, char *argv[]) {
 
         //This should be invoked once per string
         int result = insert(hash_table, HASH_TABLE_SIZE, str, &collisions, &stored_in_home);
+        printf("Collisions after inserting %s: %d\n", str, collisions); // delete once the program is working
         printf("The insert function ran for %d times\n", temp); //delete once the program is working
-        printf("the value of collisions is %d", collisions); // Debugging statement
+        printf("the value of collisions is %d\n", collisions); // Debugging statement
 
         if (result >= 0) {
             unique_strings++;
-            printf("\nunique strings is %d\n", unique_strings); // Debugging statement
+            printf("unique strings is %d\n", unique_strings); // Debugging statement
 
             if (result == home_address) {
                 stored_in_home++;
