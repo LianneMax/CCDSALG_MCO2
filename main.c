@@ -1,26 +1,47 @@
 #include "hash.h"
 
+// Function to find the next prime number greater than or equal to `num`
+unsigned int next_prime(unsigned int num) {
+    unsigned int i; // Declare loop variable outside
+    while (1) {
+        int is_prime = 1;
+        for (i = 2; i * i <= num; i++) { // Use externally declared variable
+            if (num % i == 0) {
+                is_prime = 0;
+                break;
+            }
+        }
+        if (is_prime) return num;
+        num++;
+    }
+}
+
 int main(int argc, char *argv[]) {
     if (argc != 3) {
         fprintf(stderr, "Usage: %s <input_file> <output_file>\n", argv[0]);
-
-
         return EXIT_FAILURE;
     }
 
     // Open input file
-    FILE *in = fopen(argv[1], "r");
-    if (!in) {
+    FILE *input = fopen(argv[1], "r");
+    if (!input) {
         perror("Error opening input file");
         return EXIT_FAILURE;
     }
 
     unsigned int n;
-    fscanf(in, "%u", &n); // Read the number of strings
+    if (fscanf(input, "%u", &n) != 1) { // Read the number of strings
+        fprintf(stderr, "Error: Unable to read the number of strings from input file.\n");
+        fclose(input);
+        return EXIT_FAILURE;
+    }
+
+    // Compute hash table size
+    unsigned int table_size = next_prime((unsigned int)(1.1 * n));
 
     char buffer[100000];
-    size_t bytes_read = fread(buffer, sizeof(char), sizeof(buffer) - 1, in);
-    fclose(in);
+    size_t bytes_read = fread(buffer, sizeof(char), sizeof(buffer) - 1, input);
+    fclose(input);
 
     if (bytes_read <= 0) {
         fprintf(stderr, "Error reading input file or file is empty.\n");
@@ -30,33 +51,29 @@ int main(int argc, char *argv[]) {
     buffer[bytes_read] = '\0'; // Ensure null termination
 
     // Initialize hash table
-    char *hash_table[HASH_TABLE_SIZE] = {NULL};
-    unsigned int collisions = 0;
-    unsigned int total_comparisons = 0;
+    char **hash_table = calloc(table_size, sizeof(char *));
+    if (!hash_table) {
+        fprintf(stderr, "Error allocating memory for hash table.\n");
+        return EXIT_FAILURE;
+    }
+
+    unsigned int collisions = 0, total_comparisons = 0;
+    unsigned int unique_strings = 0, stored_in_home = 0;
+    unsigned int i; // Declare loop variable outside
 
     // Tokenize input strings
     char *token = strtok(buffer, " \n");
-    unsigned int unique_strings = 0, stored_in_home = 0;
-
     while (token != NULL) {
         char str[MAX_STRING_LENGTH + 1];
         strncpy(str, token, MAX_STRING_LENGTH);
         str[MAX_STRING_LENGTH] = '\0'; // Ensure null termination
 
-        unsigned int home_address = hash_function(str, HASH_TABLE_SIZE);
-        int result = insert(hash_table, HASH_TABLE_SIZE, str, &collisions);
+        unsigned int home_address = hash_function(str, table_size);
+        int result = insert(hash_table, table_size, str, &collisions);
         if (result >= 0) {
             unique_strings++;
             if (result == (int)home_address) stored_in_home++;
-
-
-
-
-
-
         }
-
-
 
         token = strtok(NULL, " \n");
     }
@@ -65,37 +82,65 @@ int main(int argc, char *argv[]) {
     FILE *out = fopen(argv[2], "w");
     if (!out) {
         perror("Error opening output file");
-        free_table(hash_table, HASH_TABLE_SIZE);
+        free_table(hash_table, table_size);
         return EXIT_FAILURE;
     }
 
+    // Calculate average comparisons
+    double avg_comparisons = 0;
+    if (unique_strings > 0) {
+        for (i = 0; i < table_size; i++) { // Use externally declared variable
+            if (hash_table[i] != NULL) {
+                unsigned int comparisons = 0;
+                search(hash_table, table_size, hash_table[i], &comparisons);
+                total_comparisons += comparisons;
+            }
+        }
+        avg_comparisons = (double)total_comparisons / unique_strings;
+    }
+
     // Write summary results
-    fprintf(out, "%u\n", n);
-    fprintf(out, "%u\n", unique_strings);
-    fprintf(out, "%u\n", stored_in_home);
-    fprintf(out, "%u\n", collisions);
-    fprintf(out, "%.6f\n", (unique_strings > 0) ? (double)total_comparisons / unique_strings : 0);
+    fprintf(out, "%u\n", n);                            // Total strings read
+    fprintf(out, "%u\n", unique_strings);               // Unique strings stored
+    fprintf(out, "%u\n", stored_in_home);               // Stored in home addresses
+    fprintf(out, "%u\n", unique_strings - stored_in_home); // Not stored in home
+    fprintf(out, "%.6f\n", avg_comparisons);            // Average comparisons
 
     // Write hash table details
-    unsigned int i; // Declare loop variable outside the loop
-    for (i = 0; i < HASH_TABLE_SIZE; i++) {
+    for (i = 0; i < table_size; i++) { // Use externally declared variable
         if (hash_table[i] != NULL) {
             unsigned int comparisons = 0;
-            unsigned int home_address = hash_function(hash_table[i], HASH_TABLE_SIZE);
-            search(hash_table, HASH_TABLE_SIZE, hash_table[i], &comparisons);
-            fprintf(out, "%u %s %u %s %u\n", i, hash_table[i], home_address,
+            unsigned int home_address = hash_function(hash_table[i], table_size);
+            search(hash_table, table_size, hash_table[i], &comparisons);
+            fprintf(out, "%-6u %-15s %-5u %-5s %-5u\n", i, hash_table[i], home_address,
                     (home_address == i) ? "YES" : "NO", comparisons);
-            total_comparisons += comparisons;
         } else {
-            fprintf(out, "%u --- --- --- ---\n", i);
+            fprintf(out, "%-6u %-15s %-5s %-5s %-5s\n", i, "---", "---", "---", "---");
         }
     }
 
-
     fclose(out);
-    free_table(hash_table, HASH_TABLE_SIZE);
+    free_table(hash_table, table_size);
     printf("Output written to %s\n", argv[2]);
-
 
     return EXIT_SUCCESS;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

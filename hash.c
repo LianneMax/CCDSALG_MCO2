@@ -6,9 +6,6 @@ unsigned int hash_function(const char *str, unsigned int table_size) {
     while (*str) {
         hash = ((hash << 5) + hash) + *str; // hash * 33 + current character
         str++;
-
-
-
     }
     return hash % table_size; // Ensure it fits within the table size
 }
@@ -34,8 +31,6 @@ int insert(char *table[], unsigned int table_size, const char *str, unsigned int
         if (index == original_index) {
             return -1; // Table is full
         }
-
-
     }
     table[index] = strdup(str); // Store the string
     return index;
@@ -56,7 +51,6 @@ int search(char *table[], unsigned int table_size, const char *str, unsigned int
         index = resolve_collision(original_index, i, table_size);
         if (index == original_index) {
             break; // Full loop, string not found
-
         }
     }
     return -1; // Not found
@@ -64,10 +58,11 @@ int search(char *table[], unsigned int table_size, const char *str, unsigned int
 
 // Free hash table memory
 void free_table(char *table[], unsigned int table_size) {
-    unsigned int i; // Declare the loop variable outside
+    unsigned int i;
     for (i = 0; i < table_size; i++) {
         if (table[i] != NULL) {
             free(table[i]);
+        }
     }
 }
-}
+
