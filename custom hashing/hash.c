@@ -1,13 +1,15 @@
 #include "hash.h"
 
-// Updated Custom Hash Function: Consistent with djb2
-unsigned int custom_hash(const char *str, unsigned int table_size) {
-    unsigned int hash = 5381; // Starting hash value for djb2
-    while (*str) {
-        hash = ((hash << 5) + hash) + *str; // hash * 33 + current character
-        str++;
+// Custom hash function adapted to use table_size as a parameter
+unsigned int custom_hash(const char *input, unsigned int table_size) {
+    unsigned int hash_value = 0;
+    unsigned int prime_multiplier = 37;
+
+    int i;
+    for (i = 0; input[i] != '\0' && i < MAX_STRING_LENGTH; i++) {
+        hash_value = (hash_value * prime_multiplier + input[i] * (i + 1)) & 0x7FFFFFFF;
     }
-    return hash % table_size; // Ensure it fits within the table size
+    return hash_value % table_size; // Use table_size to ensure hash fits
 }
 
 // Linear Probing for Collision Resolution
