@@ -1,0 +1,77 @@
+64
+64
+38
+26
+4.531250
+
+0      collideCa       0     YES   1    
+1      ---             ---   ---   ---  
+2      ---             ---   ---   ---  
+3      collideWO       3     YES   1    
+4      collideoE       4     YES   1    
+5      ---             ---   ---   ---  
+6      collideuV       6     YES   1    
+7      collidecq       7     YES   1    
+8      collideLZ       6     NO    3    
+9      collideTn       6     NO    4    
+10     collidejb       10    YES   1    
+11     collidebO       11    YES   1    
+12     collidemF       10    NO    3    
+13     collidehZ       7     NO    7    
+14     collideTv       14    YES   1    
+15     collideUP       9     NO    7    
+16     collidejh       16    YES   1    
+17     collideUX       17    YES   1    
+18     collidexF       18    YES   1    
+19     collidezA       8     NO    12   
+20     collidegz       6     NO    15   
+21     collidexB       14    NO    8    
+22     collideTs       11    NO    12   
+23     collideWc       23    YES   1    
+24     collidemT       24    YES   1    
+25     collidewn       25    YES   1    
+26     collidehm       26    YES   1    
+27     collidewm       24    NO    4    
+28     collideML       25    NO    4    
+29     collidegI       28    NO    2    
+30     collideiP       30    YES   1    
+31     collidewr       29    NO    3    
+32     collideyv       28    NO    5    
+33     collideVG       33    YES   1    
+34     collideJq       34    YES   1    
+35     collidebX       20    NO    16   
+36     collidevM       30    NO    7    
+37     collidexY       37    YES   1    
+38     collidelj       13    NO    26   
+39     collideSi       39    YES   1    
+40     collidefv       40    YES   1    
+41     collideXS       40    NO    2    
+42     collideFo       42    YES   1    
+43     collideeS       43    YES   1    
+44     collideVQ       43    NO    2    
+45     collideQj       45    YES   1    
+46     collidepw       16    NO    31   
+47     collidemk       47    YES   1    
+48     collidenK       48    YES   1    
+49     collideMc       48    NO    2    
+50     collideyE       50    YES   1    
+51     collideRu       18    NO    34   
+52     collideMD       17    NO    36   
+53     collideKc       53    YES   1    
+54     collidegc       54    YES   1    
+55     ---             ---   ---   ---  
+56     collidenS       56    YES   1    
+57     ---             ---   ---   ---  
+58     collideIc       58    YES   1    
+59     collidejL       59    YES   1    
+60     collidemw       59    NO    2    
+61     collideee       61    YES   1    
+62     collidevm       62    YES   1    
+63     collidevl       61    NO    3    
+64     collideuH       63    NO    2    
+65     ---             ---   ---   ---  
+66     collidejS       66    YES   1    
+67     ---             ---   ---   ---  
+68     collideri       68    YES   1    
+69     collideMx       69    YES   1    
+70     collidedH       70    YES   1    
