@@ -107,7 +107,7 @@ int main(int argc, char *argv[]) {
     fprintf(out, "%u\n", unique_strings);               // Unique strings stored
     fprintf(out, "%u\n", stored_in_home);               // Stored in home addresses
     fprintf(out, "%u\n", unique_strings - stored_in_home); // Not stored in home
-    fprintf(out, "%.6f\n", avg_comparisons);            // Average comparisons
+    fprintf(out, "%.6f\n\n", avg_comparisons);            // Average comparisons
 
     // Write hash table details
     for (i = 0; i < table_size; i++) { // Use externally declared variable
