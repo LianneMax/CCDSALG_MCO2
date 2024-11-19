@@ -85,7 +85,6 @@ int main(int argc, char *argv[]) {
     FILE *out = fopen(argv[2], "w");
     if (!out) {
         perror("Error opening output file");
-        free_table(hash_table, table_size);
         return EXIT_FAILURE;
     }
 
@@ -115,15 +114,20 @@ int main(int argc, char *argv[]) {
             unsigned int comparisons = 0;
             unsigned int home_address = hash_function(hash_table[i], table_size);
             search(hash_table, table_size, hash_table[i], &comparisons);
-            fprintf(out, "%-6u %-15s %-5u %-5s %-5u\n", i, hash_table[i], home_address,
-                    (home_address == i) ? "YES" : "NO", comparisons);
+
+            char *home_match = "NO"; // Default to NO
+            if (home_address == i) {
+                home_match = "YES"; // Update to YES if stored in the home address
+            }
+
+            fprintf(out, "%-6u %-15s %-5u %-5s %-5u\n", i, hash_table[i], home_address, home_match, comparisons);
         } else {
             fprintf(out, "%-6u %-15s %-5s %-5s %-5s\n", i, "---", "---", "---", "---");
         }
     }
 
+
     fclose(out);
-    free_table(hash_table, table_size);
     printf("Output written to %s\n", argv[2]);
 
     return EXIT_SUCCESS;

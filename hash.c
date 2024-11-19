@@ -13,6 +13,7 @@ unsigned int hash_function(const char *str, unsigned int table_size) {
 // Linear Probing for Collision Resolution
 unsigned int resolve_collision(unsigned int index, unsigned int i, unsigned int table_size) {
     return (index + i) % table_size; // Increment index by 1 (i) on each collision
+
 }
 
 // Insert function
@@ -56,13 +57,4 @@ int search(char *table[], unsigned int table_size, const char *str, unsigned int
     return -1; // Not found
 }
 
-// Free hash table memory
-void free_table(char *table[], unsigned int table_size) {
-    unsigned int i;
-    for (i = 0; i < table_size; i++) {
-        if (table[i] != NULL) {
-            free(table[i]);
-        }
-    }
-}
 
