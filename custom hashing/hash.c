@@ -1,13 +1,12 @@
 #include "hash.h"
 
 /*  Custom Hash Function
- *  0x7FFFFFFF
     - djb2 and FNV hash were used for inspiration
     - uses a prime multiplier (prime_multiplier)
  */
-unsigned int custom_hash(const char *input, unsigned int table_size) {
-    unsigned int hash_value = 0; //will hold the computed hash during the loop
-    unsigned int prime_multiplier = 37;
+ int custom_hash(const char *input,  int table_size) {
+     int hash_value = 0; //will hold the computed hash during the loop
+     int prime_multiplier = 37;
 
     int i;
     /*  the loop will continue until it reaches the end of the string OR
@@ -18,7 +17,7 @@ unsigned int custom_hash(const char *input, unsigned int table_size) {
                 - To introduce positional information into the hash
 
             B. The current hash_value is multiplied by the prime_multiplier (37)
-                - Spreads the bits to make sure 
+                - Spreads the bits to make sure that small differences in 
         */
         hash_value = (hash_value * prime_multiplier + input[i] * (i + 1)) & 0x7FFFFFFF;
     }
@@ -26,15 +25,15 @@ unsigned int custom_hash(const char *input, unsigned int table_size) {
 }
 
 // Linear Probing for Collision Resolution
-unsigned int resolve_collision(unsigned int index, unsigned int i, unsigned int table_size) {
+  int resolve_collision( int index,  int i,  int table_size) {
     return (index + i) % table_size; // Increment index by 1 (i) on each collision
 }
 
 // Insert function
-int insert(char *table[], unsigned int table_size, const char *str, unsigned int *collisions) {
-    unsigned int index = custom_hash(str, table_size);
-    unsigned int original_index = index;
-    unsigned int i = 0;
+int insert(char *table[],  int table_size, const char *str,  int *collisions) {
+     int index = custom_hash(str, table_size);
+     int original_index = index;
+     int i = 0;
 
     while (table[index] != NULL) {
         if (strcmp(table[index], str) == 0) {
@@ -52,10 +51,10 @@ int insert(char *table[], unsigned int table_size, const char *str, unsigned int
 }
 
 // Search function
-int search(char *table[], unsigned int table_size, const char *str, unsigned int *comparisons) {
-    unsigned int index = custom_hash(str, table_size);
-    unsigned int original_index = index;
-    unsigned int i = 0;
+int search(char *table[],  int table_size, const char *str,  int *comparisons) {
+     int index = custom_hash(str, table_size);
+     int original_index = index;
+     int i = 0;
 
     while (table[index] != NULL) {
         (*comparisons)++;

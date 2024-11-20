@@ -1,10 +1,10 @@
 #include "hash.h"
 
 // Function to find the next prime number greater than `num`
-unsigned int next_prime(unsigned int num) {
+ int next_prime( int num) {
     if (num <= 2) return 2; // Special case for small numbers
     num++; // Start searching from the next number
-    unsigned int i; // Declare loop variable outside
+     int i; // Declare loop variable outside
     while (1) {
         int is_prime = 1;
         for (i = 2; i * i <= num; i++) { // Check divisibility
@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
         return EXIT_FAILURE;
     }
 
-    unsigned int n;
+     int n;
     if (fscanf(input, "%u", &n) != 1) { // Read the number of strings
         fprintf(stderr, "Error: Unable to read the number of strings from input file.\n");
         fclose(input);
@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
     }
 
     // Compute hash table size
-    unsigned int table_size = next_prime((unsigned int)(1.1 * n));
+     int table_size = next_prime(( int)(1.1 * n));
     printf("Computed hash table size: %u\n", table_size);
 
     char buffer[100000];
@@ -60,9 +60,9 @@ int main(int argc, char *argv[]) {
         return EXIT_FAILURE;
     }
 
-    unsigned int collisions = 0, total_comparisons = 0;
-    unsigned int unique_strings = 0, stored_in_home = 0;
-    unsigned int i; // Declare loop variable outside
+     int collisions = 0, total_comparisons = 0;
+     int unique_strings = 0, stored_in_home = 0;
+     int i; // Declare loop variable outside
 
     // Tokenize input strings
     char *token = strtok(buffer, " \n");
@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
         strncpy(str, token, MAX_STRING_LENGTH);
         str[MAX_STRING_LENGTH] = '\0'; // Ensure null termination
 
-        unsigned int home_address = custom_hash(str, table_size);
+         int home_address = custom_hash(str, table_size);
         int result = insert(hash_table, table_size, str, &collisions);
         if (result >= 0) {
             unique_strings++;
@@ -93,7 +93,7 @@ int main(int argc, char *argv[]) {
     if (unique_strings > 0) {
         for (i = 0; i < table_size; i++) { // Use externally declared variable
             if (hash_table[i] != NULL) {
-                unsigned int comparisons = 0;
+                 int comparisons = 0;
                 search(hash_table, table_size, hash_table[i], &comparisons);
                 total_comparisons += comparisons;
             }
@@ -111,8 +111,8 @@ int main(int argc, char *argv[]) {
     // Write hash table details
     for (i = 0; i < table_size; i++) { // Use externally declared variable
         if (hash_table[i] != NULL) {
-            unsigned int comparisons = 0;
-            unsigned int home_address = custom_hash(hash_table[i], table_size);
+             int comparisons = 0;
+             int home_address = custom_hash(hash_table[i], table_size);
             search(hash_table, table_size, hash_table[i], &comparisons);
 
             char *home_match = "NO"; // Default to NO
