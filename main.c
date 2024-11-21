@@ -1,19 +1,22 @@
 #include "hash.h"
 
 // Function to find the next prime number greater than `num`
-unsigned int next_prime(unsigned int num) {
+ int next_prime( int num) {
     if (num <= 2) return 2; // Special case for small numbers
     num++; // Start searching from the next number
-    unsigned int i; // Declare loop variable outside
+     int i; // Declare loop variable outside
     while (1) {
         int is_prime = 1;
         for (i = 2; i * i <= num; i++) { // Check divisibility
             if (num % i == 0) {
-                is_prime = 0;
+                is_prime = 0; //if the number is a prime number, it will set is_prime to true (0)
                 break;
             }
         }
-        if (is_prime) return num; // Found the next prime
+        if (is_prime) {
+            return num; // If is_prime is true (0), the function will return the prime number
+        }
+
         num++;
     }
 }
@@ -31,7 +34,7 @@ int main(int argc, char *argv[]) {
         return EXIT_FAILURE;
     }
 
-    unsigned int n;
+     int n;
     if (fscanf(input, "%u", &n) != 1) { // Read the number of strings
         fprintf(stderr, "Error: Unable to read the number of strings from input file.\n");
         fclose(input);
@@ -39,11 +42,13 @@ int main(int argc, char *argv[]) {
     }
 
     // Compute hash table size
-    unsigned int table_size = next_prime((unsigned int)(1.1 * n));
+     int table_size = next_prime(( int)(1.1 * n));
     printf("Computed hash table size: %u\n", table_size);
 
-    char buffer[100000];
-    size_t bytes_read = fread(buffer, sizeof(char), sizeof(buffer) - 1, input);
+    char buffer[100000]; //temporary storage for data from reading the input file
+
+    //buffer is size-1 to allow null terminator storage
+    size_t bytes_read = fread(buffer, sizeof(char), sizeof(buffer) - 1, input); 
     fclose(input);
 
     if (bytes_read <= 0) {
@@ -60,19 +65,21 @@ int main(int argc, char *argv[]) {
         return EXIT_FAILURE;
     }
 
-    unsigned int collisions = 0, total_comparisons = 0;
-    unsigned int unique_strings = 0, stored_in_home = 0;
-    unsigned int i; // Declare loop variable outside
+     int collisions = 0, total_comparisons = 0;
+     int unique_strings = 0, stored_in_home = 0;
+     int i; // Declare loop variable outside
 
-    // Tokenize input strings
+    /*  Tokenize input strings
+        - tokenizing something means, in this case, removing the whitespace and and newlines from the input file read
+    */ 
     char *token = strtok(buffer, " \n");
     while (token != NULL) {
-        char str[MAX_STRING_LENGTH + 1];
-        strncpy(str, token, MAX_STRING_LENGTH);
+        char str[MAX_STRING_LENGTH + 1]; //extra character allocated for null terminator
+        strncpy(str, token, MAX_STRING_LENGTH); //copies the token string to str
         str[MAX_STRING_LENGTH] = '\0'; // Ensure null termination
 
-        unsigned int home_address = hash_function(str, table_size);
-        int result = insert(hash_table, table_size, str, &collisions);
+        int home_address = custom_hash(str, table_size); //the custom hashing in action
+        int result = insert(hash_table, table_size, str, &collisions); //inserts the string
         if (result >= 0) {
             unique_strings++;
             if (result == (int)home_address) stored_in_home++;
@@ -93,7 +100,7 @@ int main(int argc, char *argv[]) {
     if (unique_strings > 0) {
         for (i = 0; i < table_size; i++) { // Use externally declared variable
             if (hash_table[i] != NULL) {
-                unsigned int comparisons = 0;
+                 int comparisons = 0;
                 search(hash_table, table_size, hash_table[i], &comparisons);
                 total_comparisons += comparisons;
             }
@@ -111,8 +118,8 @@ int main(int argc, char *argv[]) {
     // Write hash table details
     for (i = 0; i < table_size; i++) { // Use externally declared variable
         if (hash_table[i] != NULL) {
-            unsigned int comparisons = 0;
-            unsigned int home_address = hash_function(hash_table[i], table_size);
+             int comparisons = 0;
+             int home_address = custom_hash(hash_table[i], table_size);
             search(hash_table, table_size, hash_table[i], &comparisons);
 
             char *home_match = "NO"; // Default to NO
