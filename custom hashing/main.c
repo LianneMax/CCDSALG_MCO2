@@ -9,11 +9,14 @@
         int is_prime = 1;
         for (i = 2; i * i <= num; i++) { // Check divisibility
             if (num % i == 0) {
-                is_prime = 0;
+                is_prime = 0; //if the number is a prime number, it will set is_prime to true (0)
                 break;
             }
         }
-        if (is_prime) return num; // Found the next prime
+        if (is_prime) {
+            return num; // If is_prime is true (0), the function will return the prime number
+        }
+
         num++;
     }
 }
@@ -42,8 +45,10 @@ int main(int argc, char *argv[]) {
      int table_size = next_prime(( int)(1.1 * n));
     printf("Computed hash table size: %u\n", table_size);
 
-    char buffer[100000];
-    size_t bytes_read = fread(buffer, sizeof(char), sizeof(buffer) - 1, input);
+    char buffer[100000]; //temporary storage for data from reading the input file
+
+    //buffer is size-1 to allow null terminator storage
+    size_t bytes_read = fread(buffer, sizeof(char), sizeof(buffer) - 1, input); 
     fclose(input);
 
     if (bytes_read <= 0) {
@@ -64,15 +69,17 @@ int main(int argc, char *argv[]) {
      int unique_strings = 0, stored_in_home = 0;
      int i; // Declare loop variable outside
 
-    // Tokenize input strings
+    /*  Tokenize input strings
+        - tokenizing something means, in this case, removing the whitespace and and newlines from the input file read
+    */ 
     char *token = strtok(buffer, " \n");
     while (token != NULL) {
-        char str[MAX_STRING_LENGTH + 1];
-        strncpy(str, token, MAX_STRING_LENGTH);
+        char str[MAX_STRING_LENGTH + 1]; //extra character allocated for null terminator
+        strncpy(str, token, MAX_STRING_LENGTH); //copies the token string to str
         str[MAX_STRING_LENGTH] = '\0'; // Ensure null termination
 
-         int home_address = custom_hash(str, table_size);
-        int result = insert(hash_table, table_size, str, &collisions);
+        int home_address = custom_hash(str, table_size); //the custom hashing in action
+        int result = insert(hash_table, table_size, str, &collisions); //inserts the string
         if (result >= 0) {
             unique_strings++;
             if (result == (int)home_address) stored_in_home++;

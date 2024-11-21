@@ -6,18 +6,20 @@
  */
  int custom_hash(const char *input,  int table_size) {
      int hash_value = 0; //will hold the computed hash during the loop
-     int prime_multiplier = 37;
+     int prime_multiplier = 37; //37 ensures better distribution when multiplying
 
     int i;
-    /*  the loop will continue until it reaches the end of the string OR
+    /*  the loop will continue until it reaches the end of the string (null terminator) OR
         the MAX_STRING_LENGTH is met
     */ 
     for (i = 0; input[i] != '\0' && i < MAX_STRING_LENGTH; i++) {
-        /*  A. Each character's ASCII valued is mmultiplied by its position in the string
+        /*  A. Each character's ASCII valued is mmultiplied by its position in the string -> (i+1)
                 - To introduce positional information into the hash
 
-            B. The current hash_value is multiplied by the prime_multiplier (37)
-                - Spreads the bits to make sure that small differences in 
+            B. The current hash_value is multiplied by the prime_multiplier (37) -> (hash_value * prime_multiplier)
+                - Spreads the bits to make sure that small differences in the input leads to big hashing difference
+            
+            C. The Bitwise AND operator is used to ensure it remains within a positive 32-bit integer range -> (& 0x7FFFFFFF)
         */
         hash_value = (hash_value * prime_multiplier + input[i] * (i + 1)) & 0x7FFFFFFF;
     }
