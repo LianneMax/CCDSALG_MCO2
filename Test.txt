@@ -1,0 +1,25 @@
+16
+15
+10
+5
+1.533333
+
+0      ---             ---   ---   ---  
+1      OVER            1     YES   1    
+2      ---             ---   ---   ---  
+3      Dog             3     YES   1    
+4      desu            3     NO    2    
+5      THE             5     YES   1    
+6      jumps           6     YES   1    
+7      lazy            7     YES   1    
+8      ---             ---   ---   ---  
+9      ka              9     YES   1    
+10     BroWn           10    YES   1    
+11     xyZazL          10    NO    2    
+12     kore            10    NO    3    
+13     ne              10    NO    4    
+14     quick           14    YES   1    
+15     saigou          15    YES   1    
+16     fox             16    YES   1    
+17     wa              16    NO    2    
+18     ---             ---   ---   ---  
