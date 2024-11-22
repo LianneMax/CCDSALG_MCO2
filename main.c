@@ -52,9 +52,6 @@ int main(int argc, char *argv[]) {
     double temp_size = 1.1 * n; // Calculate 1.1 * n
     int table_size = next_prime(temp_size); // Pass directly to next_prime
 
-    // Debugging output
-    printf("Computed hash table size: %d\n", table_size);
-
     char buffer[100000]; // Temporary storage for data from reading the input file
     size_t bytes_read = fread(buffer, sizeof(char), sizeof(buffer) - 1, input);
     fclose(input);
@@ -72,15 +69,15 @@ int main(int argc, char *argv[]) {
         hash_table[i] = NULL;
     }
 
-    int collisions = 0, total_comparisons = 0;
-    int unique_strings = 0, stored_in_home = 0;
+    // Tracking statistics for hash table operations
+    int collisions = 0;          // Total number of collisions during insertions
+    int total_comparisons = 0;   // Total comparisons made during searches
+    int unique_strings = 0;      // Count of unique strings inserted
+    int stored_in_home = 0;      // Count of strings stored in their home addresses
 
     // Tokenize input strings
     char *token = strtok(buffer, " \n");
     while (token != NULL) {
-
-        //For debugging
-        printf("Read string: %s\n", token);
 
         char str[MAX_STRING_LENGTH + 1];
         strncpy(str, token, MAX_STRING_LENGTH);
@@ -95,6 +92,9 @@ int main(int argc, char *argv[]) {
 
         token = strtok(NULL, " \n");
     }
+
+    // Display n on the command line
+    printf("Number of strings (n): %d\n", n);
 
     //Warning if unique_strings isnt the same with n
     if (unique_strings != n) {
