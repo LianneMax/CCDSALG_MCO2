@@ -94,7 +94,7 @@ int main(int argc, char *argv[]) {
     }
 
     // Display n on the command line
-    printf("Number of strings (n): %d\n", n);
+    printf("Hash Table Size (Indices): %d\n", table_size);
 
     //Warning if unique_strings isnt the same with n
     if (unique_strings != n) {
