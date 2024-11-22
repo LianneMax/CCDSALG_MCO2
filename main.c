@@ -78,6 +78,10 @@ int main(int argc, char *argv[]) {
     // Tokenize input strings
     char *token = strtok(buffer, " \n");
     while (token != NULL) {
+
+        //For debugging
+        printf("Read string: %s\n", token);
+
         char str[MAX_STRING_LENGTH + 1];
         strncpy(str, token, MAX_STRING_LENGTH);
         str[MAX_STRING_LENGTH] = '\0'; // Ensure null termination
@@ -90,6 +94,11 @@ int main(int argc, char *argv[]) {
         }
 
         token = strtok(NULL, " \n");
+    }
+
+    //Warning if unique_strings isnt the same with n
+    if (unique_strings != n) {
+    fprintf(stderr, "Warning: Expected %d strings but read %d.\n", n, unique_strings);
     }
 
     // Open output file
