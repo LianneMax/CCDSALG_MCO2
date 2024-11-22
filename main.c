@@ -1,30 +1,35 @@
 #include "hash.h"
 
-// Function to find the next prime number greater than `num`
-int next_prime(int num) {
-    int i;
+// Function to find the next prime number greater than or equal to `num`
+int next_prime(double num) {
+    int int_part = (int)num; // Extract the integer part
+    if (num > int_part) {    // Check if there is a fractional part
+        int_part++;          // Increment to the next integer
+    }
 
-    if (num <= 2) return 2;
-    num++;
-    int is_prime = 0;
-    while (!is_prime) {
-        is_prime = 1;
-        for (i = 2; i * i <= num; i++) {
-            if (num % i == 0) {
+    int i; // Declare the loop variable outside the loop
+    if (int_part <= 2) return 2; // Handle edge case for small numbers
+    if (int_part % 2 == 0) int_part++; // Ensure odd starting number
+    while (1) { // Loop until a prime is found
+        int is_prime = 1; // Assume int_part is prime
+        for (i = 2; i * i <= int_part; i++) { // Check divisibility
+            if (int_part % i == 0) { // If divisible, it's not prime
                 is_prime = 0;
                 break;
             }
         }
-        if (!is_prime) num++;
+        if (is_prime) {
+            return int_part; // Found the next prime
+        }
+        int_part += 2; // Skip even numbers
     }
-    return num;
 }
 
 int main(int argc, char *argv[]) {
-    
     int n;
-    
-    // Incase user doesn't know how to input
+    int i; // Declare the loop variable at the top
+
+    // Handle incorrect input usage
     if (argc != 3) {
         fprintf(stderr, "Usage: %s <input_file> <output_file>\n", argv[0]);
         return EXIT_FAILURE;
@@ -44,13 +49,10 @@ int main(int argc, char *argv[]) {
     }
 
     // Compute hash table size
-    int table_size = next_prime((int)(1.1 * n));
-    if (table_size > MAX_TABLE_SIZE) {
-        fprintf(stderr, "Error: Computed table size (%d) exceeds the maximum allowed size (%d).\n", table_size, MAX_TABLE_SIZE);
-        return EXIT_FAILURE;
-    }
+    double temp_size = 1.1 * n; // Calculate 1.1 * n
+    int table_size = next_prime(temp_size); // Pass directly to next_prime
 
-    // For Debugging
+    // Debugging output
     printf("Computed hash table size: %d\n", table_size);
 
     char buffer[100000]; // Temporary storage for data from reading the input file
@@ -65,11 +67,13 @@ int main(int argc, char *argv[]) {
     buffer[bytes_read] = '\0'; // Ensure null termination
 
     // Initialize hash table
-    char *hash_table[MAX_TABLE_SIZE] = {NULL}; // Fixed-size static array
+    char *hash_table[table_size]; // Declare the hash table array
+    for (i = 0; i < table_size; i++) {
+        hash_table[i] = NULL;
+    }
 
     int collisions = 0, total_comparisons = 0;
     int unique_strings = 0, stored_in_home = 0;
-    int i;
 
     // Tokenize input strings
     char *token = strtok(buffer, " \n");

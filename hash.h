@@ -8,8 +8,7 @@
 // Define maximum string length
 #define MAX_STRING_LENGTH 15
 
-// Define maximum table size
-#define MAX_TABLE_SIZE 18031
+
 
 // Function prototypes
 int custom_hash(const char *str,  int table_size);

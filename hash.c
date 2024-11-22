@@ -17,7 +17,7 @@ int custom_hash(const char *input, int table_size) {
         2. Add the ASCII value of the current character adjusted by (i + 1) for positional influence.
         3. Use modular arithmetic to keep the value within a consistent range.
         */
-        hash_value = (hash_value * prime_multiplier + input[i]) & mod_factor;
+        hash_value = (hash_value * prime_multiplier + input[i] *(i + 1)) & mod_factor;
     }
 
     // Ensure the hash value fits within the table size.
