@@ -2,12 +2,14 @@
 
 // Function to find the next prime number greater than or equal to `num`
 int next_prime(double num) {
+
+    int i; // Declare the loop variable outside the loop
     int int_part = (int)num; // Extract the integer part
+    
     if (num > int_part) {    // Check if there is a fractional part
         int_part++;          // Increment to the next integer
     }
 
-    int i; // Declare the loop variable outside the loop
     if (int_part <= 2) {
         return 2; // Handle edge case for small numbers
     }
