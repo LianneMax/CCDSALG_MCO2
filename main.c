@@ -8,8 +8,14 @@ int next_prime(double num) {
     }
 
     int i; // Declare the loop variable outside the loop
-    if (int_part <= 2) return 2; // Handle edge case for small numbers
-    if (int_part % 2 == 0) int_part++; // Ensure odd starting number
+    if (int_part <= 2) {
+        return 2; // Handle edge case for small numbers
+    }
+
+    if (int_part % 2 == 0) {
+        int_part++; // Ensure odd starting number
+    }
+
     while (1) { // Loop until a prime is found
         int is_prime = 1; // Assume int_part is prime
         for (i = 2; i * i <= int_part; i++) { // Check divisibility
@@ -83,7 +89,7 @@ int main(int argc, char *argv[]) {
         strncpy(str, token, MAX_STRING_LENGTH);
         str[MAX_STRING_LENGTH] = '\0'; // Ensure null termination
 
-        int home_address = custom_hash(str, table_size);
+        unsigned home_address = custom_hash(str, table_size);
         int result = insert(hash_table, table_size, str, &collisions);
         if (result >= 0) {
             unique_strings++;
@@ -132,7 +138,7 @@ int main(int argc, char *argv[]) {
     for (i = 0; i < table_size; i++) {
         if (hash_table[i] != NULL) {
             int comparisons = 0;
-            int home_address = custom_hash(hash_table[i], table_size);
+            unsigned int home_address = custom_hash(hash_table[i], table_size);
             search(hash_table, table_size, hash_table[i], &comparisons);
 
             fprintf(out, "%-6d %-15s %-5d %-5s %-5d\n", i, hash_table[i], home_address,

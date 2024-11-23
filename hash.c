@@ -5,10 +5,9 @@
    - Incorporates character values and positional information.
    - A smaller prime multiplier (31) ensures good distribution for typical text inputs.
 */
-int custom_hash(const char *input, int table_size) {
-    int hash_value = 0;           // Holds the computed hash during the loop.
+unsigned int custom_hash(const char *input, int table_size) {
+    unsigned int hash_value = 0;           // Holds the computed hash during the loop.
     int prime_multiplier = 37;   // Prime multiplier for better distribution.
-    int mod_factor = 0x7FFFFFFF; // Stay within positive 32-bit integer range.
     int i;
 
     for (i = 0; input[i] != '\0' && i < MAX_STRING_LENGTH; i++) {
@@ -17,7 +16,7 @@ int custom_hash(const char *input, int table_size) {
         2. Add the ASCII value of the current character adjusted by (i + 1) for positional influence.
         3. Use modular arithmetic to keep the value within a consistent range.
         */
-        hash_value = (hash_value * prime_multiplier + input[i] *(i + 1)) & mod_factor;
+        hash_value = (hash_value * prime_multiplier + input[i] *(i + 1));
     }
 
     // Ensure the hash value fits within the table size.

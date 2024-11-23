@@ -11,7 +11,7 @@
 
 
 // Function prototypes
-int custom_hash(const char *str,  int table_size);
+unsigned int custom_hash(const char *str,  int table_size);
 int resolve_collision( int index,  int i,  int table_size);
 int insert(char *table[],  int table_size, const char *str,  int *collisions);
 int search(char *table[],  int table_size, const char *str,  int *comparisons);
