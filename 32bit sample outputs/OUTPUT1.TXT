@@ -1,0 +1,43 @@
+32
+32
+17
+15
+3.531250
+
+0      collideTv       0     YES   1    
+1      collidedH       30    NO    9    
+2      collidewn       2     YES   1    
+3      collideyE       3     YES   1    
+4      collideTn       2     NO    3    
+5      collidejb       5     YES   1    
+6      collideSi       31    NO    13   
+7      collideLZ       7     YES   1    
+8      collideuV       8     YES   1    
+9      collidehZ       7     NO    3    
+10     collideQj       3     NO    8    
+11     collidewm       30    NO    19   
+12     collidemF       12    YES   1    
+13     collidexF       12    NO    2    
+14     collideWc       14    YES   1    
+15     ---             ---   ---   ---  
+16     ---             ---   ---   ---  
+17     ---             ---   ---   ---  
+18     collidenS       18    YES   1    
+19     collidebO       19    YES   1    
+20     collidejS       18    NO    3    
+21     collideVG       21    YES   1    
+22     collideeS       18    NO    5    
+23     collidejh       22    NO    2    
+24     collideMx       18    NO    7    
+25     collidenK       20    NO    6    
+26     ---             ---   ---   ---  
+27     collidemT       27    YES   1    
+28     ---             ---   ---   ---  
+29     collidecq       29    YES   1    
+30     collidehm       30    YES   1    
+31     collidevm       30    NO    2    
+32     collideee       32    YES   1    
+33     collideCa       33    YES   1    
+34     collidejL       29    NO    6    
+35     collidexY       35    YES   1    
+36     collideJq       29    NO    8    
