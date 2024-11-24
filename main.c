@@ -141,10 +141,19 @@ int main(int argc, char *argv[]) {
         if (hash_table[i] != NULL) {
             int comparisons = 0;
             unsigned int home_address = custom_hash(hash_table[i], table_size);
+
+            //For debugging purposes only
+            printf("%d\n", home_address);
+            printf("%s\n", hash_table[i]);
+            printf("--------------------------------\n");
+
             search(hash_table, table_size, hash_table[i], &comparisons);
 
-            fprintf(out, "%-6d %-15s %-5d %-5s %-5d\n", i, hash_table[i], home_address,
-                    (home_address == i ? "YES" : "NO"), comparisons);
+            if (home_address == i) {
+                fprintf(out, "%-6d %-15s %-5d %-5s %-5d\n", i, hash_table[i], home_address, "YES", comparisons);
+            } else {
+                fprintf(out, "%-6d %-15s %-5d %-5s %-5d\n", i, hash_table[i], home_address, "NO", comparisons);
+            }
         } else {
             fprintf(out, "%-6d %-15s %-5s %-5s %-5s\n", i, "---", "---", "---", "---");
         }
