@@ -89,6 +89,7 @@ int main(int argc, char *argv[]) {
     int unique_strings = 0;      // Count of unique strings inserted
     int stored_in_home = 0;      // Count of strings stored in their home addresses
     int total_strings = 0;       // Count of all strings read from the input file
+    int max_length_strings = 0;  // Count of strings exceeding maximum length
 
     // Tokenize input strings
     char *token = strtok(buffer, " \n");
@@ -96,7 +97,13 @@ int main(int argc, char *argv[]) {
         total_strings++; // Increment total strings read
 
         char str[MAX_STRING_LENGTH + 1];
-        strncpy(str, token, MAX_STRING_LENGTH);
+        if (strlen(token) > MAX_STRING_LENGTH) {
+            max_length_strings++;
+            printf("Warning: String \"%s\" exceeds max length. It was cut to \"%.*s\".\n", token, MAX_STRING_LENGTH, token);
+            strncpy(str, token, MAX_STRING_LENGTH); // Truncate to MAX_STRING_LENGTH
+        } else {
+            strncpy(str, token, MAX_STRING_LENGTH);
+        }
         str[MAX_STRING_LENGTH] = '\0'; // Ensure null termination
 
         unsigned home_address = custom_hash(str, table_size);
@@ -118,6 +125,7 @@ int main(int argc, char *argv[]) {
     // Display debugging info
     printf("Hash Table Size (Indices): %d\n", table_size);
     printf("Number of strings read: %d\n", total_strings);
+    printf("Number of strings truncated to max length: %d\n", max_length_strings);
 
     // Open output file
     FILE *out = fopen(argv[2], "w");
@@ -151,9 +159,6 @@ int main(int argc, char *argv[]) {
         if (hash_table[i] != NULL) {
             int comparisons = 0;
             unsigned int home_address = custom_hash(hash_table[i], table_size);
-
-            // Debugging output
-            printf("Index: %d, String: %s, Home Address: %d\n", i, hash_table[i], home_address);
 
             search(hash_table, table_size, hash_table[i], &comparisons);
 
