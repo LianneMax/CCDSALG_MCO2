@@ -146,6 +146,7 @@ int main(int argc, char *argv[]) {
             printf("%d\n", home_address);
             printf("%s\n", hash_table[i]);
             printf("--------------------------------\n");
+            //For debugging purposes only
 
             search(hash_table, table_size, hash_table[i], &comparisons);
 
@@ -161,6 +162,12 @@ int main(int argc, char *argv[]) {
 
     fclose(out);
     printf("Output written to %s\n", argv[2]);
+
+    //For debugging purposes only
+    printf("number of strings read: %d\n", n);
+    printf("the value of table_size: %d\n", table_size);
+    printf("the value of bytes read: %zx\n", bytes_read);
+    //For debugging purposes only
 
     return EXIT_SUCCESS;
 }
