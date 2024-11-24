@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) {
     double temp_size = 1.1 * n; // Calculate 1.1 * n
     int table_size = next_prime(temp_size); // Pass directly to next_prime
 
-    char buffer[100000]; // Temporary storage for data from reading the input file
+    char buffer[1000000]; // Temporary storage for data from reading the input file
     size_t bytes_read = fread(buffer, sizeof(char), sizeof(buffer) - 1, input);
     fclose(input);
 
