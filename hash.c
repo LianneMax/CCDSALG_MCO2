@@ -54,7 +54,7 @@ int insert(char *table[], int table_size, const char *str, int *collisions) {
 }
 
 // Search Function
-int search(char *table[], int table_size, const char *str, int *comparisons) {
+void search(char *table[], int table_size, const char *str, int *comparisons) {
     int index = custom_hash(str, table_size); // Compute the initial hash (home address).
     int original_index = index;              // Save the original index for circular probing.
     int i = 0;
@@ -65,7 +65,7 @@ int search(char *table[], int table_size, const char *str, int *comparisons) {
 
         // If the string matches the current slot, return the index.
         if (strcmp(table[index], str) == 0) {
-            return index;
+            break;
         }
 
         i++;
@@ -76,6 +76,4 @@ int search(char *table[], int table_size, const char *str, int *comparisons) {
             break;
         }
     }
-
-    return -1; // String not found.
 }
