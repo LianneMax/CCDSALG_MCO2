@@ -2,10 +2,9 @@
 
 // Function to find the next prime number greater than or equal to `num`
 int next_prime(double num) {
-
     int i; // Declare the loop variable outside the loop
     int int_part = (int)num; // Extract the integer part
-    
+
     if (num > int_part) {    // Check if there is a fractional part
         int_part++;          // Increment to the next integer
     }
@@ -56,6 +55,13 @@ int main(int argc, char *argv[]) {
         return EXIT_FAILURE;
     }
 
+    // Check if n is negative
+    if (n < 0) {
+        fprintf(stderr, "Error: Number of strings (n) cannot be negative.\n");
+        fclose(input);
+        return EXIT_FAILURE;
+    }
+
     // Compute hash table size
     double temp_size = 1.1 * n; // Calculate 1.1 * n
     int table_size = next_prime(temp_size); // Pass directly to next_prime
@@ -82,10 +88,12 @@ int main(int argc, char *argv[]) {
     int total_comparisons = 0;   // Total comparisons made during searches
     int unique_strings = 0;      // Count of unique strings inserted
     int stored_in_home = 0;      // Count of strings stored in their home addresses
+    int total_strings = 0;       // Count of all strings read from the input file
 
     // Tokenize input strings
     char *token = strtok(buffer, " \n");
     while (token != NULL) {
+        total_strings++; // Increment total strings read
 
         char str[MAX_STRING_LENGTH + 1];
         strncpy(str, token, MAX_STRING_LENGTH);
@@ -101,13 +109,15 @@ int main(int argc, char *argv[]) {
         token = strtok(NULL, " \n");
     }
 
-    // Display n on the command line
-    printf("Hash Table Size (Indices): %d\n", table_size);
-
-    //Warning if unique_strings isnt the same with n
-    if (unique_strings != n) {
-    fprintf(stderr, "Warning: Expected %d strings but read %d.\n", n, unique_strings);
+    // Check if the number of strings read matches n
+    if (total_strings != n) {
+        fprintf(stderr, "Error: The Input n (%d) is not the same as Input Strings (%d).\n", n, total_strings);
+        return EXIT_FAILURE;
     }
+
+    // Display debugging info
+    printf("Hash Table Size (Indices): %d\n", table_size);
+    printf("Number of strings read: %d\n", total_strings);
 
     // Open output file
     FILE *out = fopen(argv[2], "w");
@@ -142,11 +152,8 @@ int main(int argc, char *argv[]) {
             int comparisons = 0;
             unsigned int home_address = custom_hash(hash_table[i], table_size);
 
-            //For debugging purposes only
-            printf("%d\n", home_address);
-            printf("%s\n", hash_table[i]);
-            printf("--------------------------------\n");
-            //For debugging purposes only
+            // Debugging output
+            printf("Index: %d, String: %s, Home Address: %d\n", i, hash_table[i], home_address);
 
             search(hash_table, table_size, hash_table[i], &comparisons);
 
@@ -162,11 +169,6 @@ int main(int argc, char *argv[]) {
 
     fclose(out);
     printf("Output written to %s\n", argv[2]);
-
-    //For debugging purposes only
-    printf("number of strings read: %d\n", n);
-    printf("the value of table_size: %d\n", table_size);
-    //For debugging purposes only
 
     return EXIT_SUCCESS;
 }
