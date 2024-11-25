@@ -98,6 +98,7 @@ int main(int argc, char *argv[]) {
 
         char str[MAX_STRING_LENGTH + 1];
         if (strlen(token) > MAX_STRING_LENGTH) {
+            // if there's string that exceeds 15 characters, it's truncated to 15 characters
             max_length_strings++;
             printf("Warning: String \"%s\" exceeds max length. It was cut to \"%.*s\".\n", token, MAX_STRING_LENGTH, token);
             strncpy(str, token, MAX_STRING_LENGTH); // Truncate to MAX_STRING_LENGTH
@@ -118,6 +119,7 @@ int main(int argc, char *argv[]) {
 
     // Check if the number of strings read matches n
     if (total_strings != n) {
+        // display error message if number of strings is different from n
         fprintf(stderr, "Error: The Input n (%d) is not the same as Input Strings (%d).\n", n, total_strings);
         return EXIT_FAILURE;
     }
@@ -140,34 +142,45 @@ int main(int argc, char *argv[]) {
         for (i = 0; i < table_size; i++) {
             if (hash_table[i] != NULL) {
                 int comparisons = 0;
+                
+                //probing mechanism to handle collisions if multiple keys hash to the same index 
                 search(hash_table, table_size, hash_table[i], &comparisons);
+
+                //add the value passed by the comparisons pointer to total_comparisons
                 total_comparisons += comparisons;
             }
         }
+
+        //get the average of the total comparisons based on the unique strings
         avg_comparisons = (double)total_comparisons / unique_strings;
     }
 
     // Write summary results
-    fprintf(out, "%d\n", n);                            // Total strings read
-    fprintf(out, "%d\n", unique_strings);               // Unique strings stored
-    fprintf(out, "%d\n", stored_in_home);               // Stored in home addresses
-    fprintf(out, "%d\n", unique_strings - stored_in_home); // Not stored in home
-    fprintf(out, "%.6f\n\n", avg_comparisons);            // Average comparisons
+    fprintf(out, "%d\n", n);                                // Total strings read
+    fprintf(out, "%d\n", unique_strings);                   // Unique strings stored
+    fprintf(out, "%d\n", stored_in_home);                   // Stored in home addresses
+    fprintf(out, "%d\n", unique_strings - stored_in_home);  // Not stored in home
+    fprintf(out, "%.6f\n\n", avg_comparisons);              // Average comparisons
 
     // Write hash table details
     for (i = 0; i < table_size; i++) {
         if (hash_table[i] != NULL) {
+            //if the hash_table value is NOT EMPTY
             int comparisons = 0;
             unsigned int home_address = custom_hash(hash_table[i], table_size);
 
+            //returns pointer variable comparisons count to print out to the output txt file
             search(hash_table, table_size, hash_table[i], &comparisons);
 
             if (home_address == i) {
+                //if home address is the same as index
                 fprintf(out, "%-6d %-15s %-5d %-5s %-5d\n", i, hash_table[i], home_address, "YES", comparisons);
             } else {
+                //if the home address is not the same as the index
                 fprintf(out, "%-6d %-15s %-5d %-5s %-5d\n", i, hash_table[i], home_address, "NO", comparisons);
             }
         } else {
+            // if the hash_table value IS EMPTY
             fprintf(out, "%-6d %-15s %-5s %-5s %-5s\n", i, "---", "---", "---", "---");
         }
     }

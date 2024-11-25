@@ -4,6 +4,10 @@
    - Uses modular arithmetic to avoid overflow and ensure positive values.
    - Incorporates character values and positional information.
    - A smaller prime multiplier (31) ensures good distribution for typical text inputs.
+   - It returns an unsigned integer to ensure:
+        - non-negative index
+        - larger value range to reduce collision risk
+        - Avoid complications with negative values with the modulo operation
 */
 unsigned int custom_hash(const char *input, int table_size) {
     unsigned int hash_value = 0;  // Holds the computed hash during the loop.
@@ -18,7 +22,8 @@ unsigned int custom_hash(const char *input, int table_size) {
         hash_value = (hash_value * prime_multiplier + input[i] *(i + 1));
     }
 
-    // Ensure the hash value fits within the table size.
+    // Ensure the hash value fits within the table size
+    // also returns the unsigned integer after modulo operation with the table_size
     return hash_value % table_size;
 }
 
@@ -73,6 +78,7 @@ void search(char *table[], int table_size, const char *str, int *comparisons) {
 
         // If we have looped back to the original index, the string is not in the table.
         if (index == original_index) {
+            //ends the loop early
             break;
         }
     }
