@@ -1,5 +1,12 @@
 #include "hash.h"
 
+/**
+ * @brief Finds the next prime number greater than or equal to a given number.
+ * 
+ * @param num A double representing the number to start searching from.
+ * @return int The next prime number greater than or equal to `num`.
+ */
+
 // Function to find the next prime number greater than or equal to `num`
 int next_prime(double num) {
     int i; // Declare the loop variable outside the loop
@@ -31,6 +38,14 @@ int next_prime(double num) {
         int_part += 2; // Skip even numbers
     }
 }
+
+/**
+ * @brief Main function to process input strings and store them in a hash table.
+ * 
+ * @param argc Number of command-line arguments.
+ * @param argv Array of command-line arguments (input and output file paths).
+ * @return int Returns EXIT_SUCCESS on successful execution, EXIT_FAILURE on error.
+ */
 
 int main(int argc, char *argv[]) {
     int n;
