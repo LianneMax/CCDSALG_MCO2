@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "d:/Users/Documents/GitHub/CCDSALG_MCO2",
-      "program": "d:/Users/Documents/GitHub/CCDSALG_MCO2/build/Debug/outDebug",
+      "cwd": "c:/Users/Lianne/Documents/GitHub/CCDSALG_MCO2",
+      "program": "c:/Users/Lianne/Documents/GitHub/CCDSALG_MCO2/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
