@@ -1,0 +1,77 @@
+64
+64
+53
+11
+1.656250
+
+0      string54        0     YES   1    
+1      string9         1     YES   1    
+2      string41        1     NO    2    
+3      string37        3     YES   1    
+4      string24        4     YES   1    
+5      string11        5     YES   1    
+6      ---             ---   ---   ---  
+7      ---             ---   ---   ---  
+8      string55        8     YES   1    
+9      string42        9     YES   1    
+10     ---             ---   ---   ---  
+11     string38        11    YES   1    
+12     string25        12    YES   1    
+13     string12        13    YES   1    
+14     string60        14    YES   1    
+15     ---             ---   ---   ---  
+16     string1         16    YES   1    
+17     string43        17    YES   1    
+18     string30        18    YES   1    
+19     string39        19    YES   1    
+20     string26        20    YES   1    
+21     string13        21    YES   1    
+22     string56        16    NO    7    
+23     string2         23    YES   1    
+24     string57        24    YES   1    
+25     string44        25    YES   1    
+26     string31        26    YES   1    
+27     string61        22    NO    6    
+28     string27        28    YES   1    
+29     string14        29    YES   1    
+30     string3         30    YES   1    
+31     string62        30    NO    2    
+32     string58        32    YES   1    
+33     string45        33    YES   1    
+34     string32        34    YES   1    
+35     ---             ---   ---   ---  
+36     string28        36    YES   1    
+37     string4         37    YES   1    
+38     string15        37    NO    2    
+39     string50        39    YES   1    
+40     string59        40    YES   1    
+41     string46        41    YES   1    
+42     string33        42    YES   1    
+43     string20        43    YES   1    
+44     string5         44    YES   1    
+45     string16        45    YES   1    
+46     string29        44    NO    3    
+47     string51        47    YES   1    
+48     string63        38    NO    11   
+49     string47        49    YES   1    
+50     string34        50    YES   1    
+51     string6         51    YES   1    
+52     string21        51    NO    2    
+53     string17        53    YES   1    
+54     string64        46    NO    9    
+55     string52        55    YES   1    
+56     ---             ---   ---   ---  
+57     string48        57    YES   1    
+58     string7         58    YES   1    
+59     string22        59    YES   1    
+60     string35        58    NO    3    
+61     string18        61    YES   1    
+62     ---             ---   ---   ---  
+63     string53        63    YES   1    
+64     string40        64    YES   1    
+65     string8         65    YES   1    
+66     string36        66    YES   1    
+67     string23        67    YES   1    
+68     string10        68    YES   1    
+69     string19        69    YES   1    
+70     string49        65    NO    6    
